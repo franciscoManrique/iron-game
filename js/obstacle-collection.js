@@ -21,10 +21,16 @@ ObstacleCollection.prototype.draw = function() {
 ObstacleCollection.prototype.move = function() {
   this.obstacles.forEach(function(o) {
     o.move();
-  });
+  }); 
 };
 
-ObstacleCollection.prototype.isCollisions = function(drawable) {
+ObstacleCollection.prototype.isCollisions = function(m) { //recibe el player 
+  return this.obstacles.some(function(o) {
+    var xCol = (o.x <= (m.x + m.w) && m.x <= (o.x + o.w));
+    var yCol = ((m.y + m.h) >= o.y);
+
+    return xCol && yCol;
+  });
 };
 
 ObstacleCollection.prototype.generateObstacle = function() {
@@ -43,4 +49,7 @@ ObstacleCollection.prototype.generateObstacle = function() {
 };
 
 ObstacleCollection.prototype.cleanObstacles = function() {
+  this.obstacles = this.obstacles.filter(function(o) {
+    return o.x + o.w > 0;
+  });
 };
